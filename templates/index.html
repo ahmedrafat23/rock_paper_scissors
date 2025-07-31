@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <h1>Rock 🪨 Paper 📄 Scissors ✂️</h1>
+    <div id="buttons">
+        <button onclick="play('rock')">🪨 Rock</button>
+        <button onclick="play('paper')">📄 Paper</button>
+        <button onclick="play('scissors')">✂️ Scissors</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        function play(choice) {
+            fetch('/play', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ choice: choice })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = `
+                    <p>You chose: <strong>${data.user}</strong></p>
+                    <p>Computer chose: <strong>${data.computer}</strong></p>
+                    <h2>Result: ${data.result.toUpperCase()}</h2>
+                `;
+                });
+        }
+    </script>
+</body>
+
+</html>
